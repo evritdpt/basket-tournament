@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Basket Tournament</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+    padding:30px;
+}
+.container{
+    max-width:850px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+}
+input{
+    width:100%;
+    padding:10px;
+    margin:6px 0;
+    font-size:16px;
+}
+button{
+    padding:12px 20px;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:10px;
+}
+.match{
+    background:#ececec;
+    padding:10px;
+    border-radius:6px;
+    margin:8px 0;
+}
+.day{
+    margin-top:25px;
+}
+.rules{
+    background:#f8f8f8;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>🏀 Τουρνουά Μπάσκετ</h1>
+
+<div class="rules">
+<h3>Κανονισμοί</h3>
+
+<ul>
+<li>Ημέρα 1: 5 παιχνίδια</li>
+<li>Κάθε ομάδα παίζει 2 αγώνες</li>
+<li>Νίκη = 2 βαθμοί</li>
+<li>Ήττα = 1 βαθμός</li>
+<li>Δεν υπάρχει ισοπαλία</li>
+<li>Σε ισοπαλία → παράταση</li>
+<li>Ημέρα 2:Οι 2 πρώτοι πάνε στον τελικό</li>
+<li>3ος vs 4ος → μικρός τελικός</li>
+</ul>
+</div>
+
+<h3>Ομάδες</h3>
+
+<input id="t1" placeholder="Ομάδα 1">
+<input id="t2" placeholder="Ομάδα 2">
+<input id="t3" placeholder="Ομάδα 3">
+<input id="t4" placeholder="Ομάδα 4">
+<input id="t5" placeholder="Ομάδα 5">
+
+<button onclick="generate()">Κλήρωση</button>
+
+<div id="output"></div>
+
+</div>
+
+<script>
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function generate(){
+
+    let teams = [
+        document.getElementById("t1").value.trim(),
+        document.getElementById("t2").value.trim(),
+        document.getElementById("t3").value.trim(),
+        document.getElementById("t4").value.trim(),
+        document.getElementById("t5").value.trim()
+    ];
+
+    if(teams.some(t => t === "")){
+        alert("Συμπλήρωσε όλες τις ομάδες.");
+        return;
+    }
+
+    shuffle(teams);
+
+    const matches = [
+        [teams[0], teams[1]],
+        [teams[2], teams[3]],
+        [teams[4], teams[0]],
+        [teams[1], teams[2]],
+        [teams[3], teams[4]]
+    ];
+
+    let html = `
+        <div class="day">
+            <h2>Ημέρα 1</h2>
+
+            <div class="match">Game 1: ${matches[0][0]} vs ${matches[0][1]}</div>
+            <div class="match">Game 2: ${matches[1][0]} vs ${matches[1][1]}</div>
+            <div class="match">Game 3: ${matches[2][0]} vs ${matches[2][1]}</div>
+            <div class="match">Game 4: ${matches[3][0]} vs ${matches[3][1]}</div>
+            <div class="match">Game 5: ${matches[4][0]} vs ${matches[4][1]}</div>
+        </div>
+
+        <div class="day">
+            <h2>Ημέρα 2</h2>
+
+            <div class="match">Μικρός Τελικός: 3ος vs 4ος</div>
+            <div class="match">Τελικός: 1ος vs 2ος</div>
+        </div>
+    `;
+
+    document.getElementById("output").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
